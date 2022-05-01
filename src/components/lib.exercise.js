@@ -30,15 +30,42 @@ import {Dialog as ReachDialog} from '@reach/dialog'
 //   background: '#f1f2f7',
 //   color: '#434449',
 
+const Button = styled.button(props => {
+  return {
+    padding: '10px 15px',
+    border: '0',
+    lineHeight: '1',
+    borderRadius: '3px',
+    background: props.variant === 'primary' ? '#3f51b5' : '#f1f2f7',
+    color: props.variant === 'primary' ? 'white' : '#434449',
+  }
+})
+
 // Input
 //   borderRadius: '3px',
 //   border: '1px solid #f1f1f4',
 //   background: '#f1f2f7',
 //   padding: '8px 12px',
 
+const Input = styled.input(props => {
+  return {
+    borderRadius: '3px',
+    border: '1px solid #f1f1f4',
+    background: '#f1f2f7',
+    padding: '8px 12px',
+  }
+})
+
 // FormGroup
 //   display: 'flex',
 //   flexDirection: 'column',
+
+const FormGroup = styled.div(props => {
+  return {
+    display: 'flex',
+    flexDirection: 'column',
+  }
+})
 
 // 💰 I'm giving a few of these to you:
 const CircleButton = styled.button({
@@ -68,4 +95,4 @@ const Dialog = styled(ReachDialog)({
   },
 })
 
-export {CircleButton, Dialog}
+export {Button, CircleButton, Dialog, FormGroup, Input}
