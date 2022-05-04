@@ -4,6 +4,9 @@ import {Dialog as ReachDialog} from '@reach/dialog'
 import * as colors from 'styles/colors'
 import * as mq from 'styles/media-queries'
 
+import {FaSpinner} from 'react-icons/fa'
+import {keyframes} from '@emotion/core'
+
 // 🐨 create a button styled component here called "Button"
 // make it look nice and allow it to support a "variant" prop which can be
 // either "primary" or "secondary".
@@ -46,6 +49,9 @@ const buttonVariants = {
 
 const Button = styled.button(
   {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: '10px 15px',
     border: '0',
     lineHeight: '1',
@@ -104,4 +110,17 @@ const Dialog = styled(ReachDialog)({
   },
 })
 
-export {Button, CircleButton, Dialog, FormGroup, Input}
+const spin = keyframes`
+  from {transform:rotate(0deg);}
+  to {transform:rotate(360deg);}
+`
+
+const LoadingSpinner = styled(FaSpinner)({
+  animation: `${spin} 1s linear infinite`,
+})
+
+LoadingSpinner.defaultProps = {
+  'aria-label': 'Loading',
+}
+
+export {Button, CircleButton, Dialog, FormGroup, Input, LoadingSpinner}
