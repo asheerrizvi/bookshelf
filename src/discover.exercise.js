@@ -22,7 +22,7 @@ function DiscoverBooksScreen() {
       return
     }
     setStatus('loading')
-    client(`books?query=${encodeURIComponent('FAIL')}`).then(
+    client(`books?query=${encodeURIComponent(query)}`).then(
       responseData => {
         setData(responseData)
         setStatus('success')
@@ -43,8 +43,6 @@ function DiscoverBooksScreen() {
     setQueried(true)
     setQuery(event.target.elements.search.value)
   }
-
-  console.log(error, isError)
 
   return (
     <div
