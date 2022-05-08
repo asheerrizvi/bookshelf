@@ -3,7 +3,7 @@ import {jsx} from '@emotion/core'
 
 import * as React from 'react'
 // 🐨 you're going to need this:
-// import * as auth from 'auth-provider'
+import * as auth from 'auth-provider'
 import {AuthenticatedApp} from './authenticated-app'
 import {UnauthenticatedApp} from './unauthenticated-app'
 
@@ -19,7 +19,26 @@ function App() {
   // 🐨 if there's a user, then render the AuthenticatedApp with the user and logout
   // 🐨 if there's not a user, then render the UnauthenticatedApp with login and register
 
-  return <UnauthenticatedApp />
+  const [user, setUser] = React.useState(null)
+
+  function login(form) {
+    return auth.login(form).then(u => setUser(u))
+  }
+
+  function register(form) {
+    return auth.register(form).then(u => setUser(u))
+  }
+
+  function logout() {
+    auth.logout()
+    setUser(null)
+  }
+
+  return user ? (
+    <AuthenticatedApp logout={logout} user={user} />
+  ) : (
+    <UnauthenticatedApp login={login} register={register} />
+  )
 }
 
 export {App}
