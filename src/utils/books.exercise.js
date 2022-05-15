@@ -1,5 +1,5 @@
 import {useQuery} from 'react-query'
-import {client} from './api-client.exercise'
+import {client} from './api-client'
 import bookPlaceholderSvg from 'assets/book-placeholder.svg'
 
 const loadingBook = {
@@ -11,37 +11,29 @@ const loadingBook = {
   loadingBook: true,
 }
 
-function useBook(bookId, user) {
-  const {data: book = loadingBook, error, isLoading, isError, isSuccess} = useQuery({
-    queryKey: ['book', {bookId}],
-    queryFn: () =>
-      client(`books/${bookId}`, {token: user.token}).then(data => data.book),
-  })
-
-  return {book, error, isLoading, isError, isSuccess};
-}
-
 const loadingBooks = Array.from({length: 10}, (v, index) => ({
   id: `loading-book-${index}`,
   ...loadingBook,
 }))
 
 function useBookSearch(query, user) {
-  const {
-    data: books = loadingBooks,
-    error,
-    isLoading,
-    isError,
-    isSuccess,
-  } = useQuery({
+  const result = useQuery({
     queryKey: ['bookSearch', {query}],
     queryFn: () =>
       client(`books?query=${encodeURIComponent(query)}`, {
         token: user.token,
       }).then(data => data.books),
   })
+  return {...result, books: result.data ?? loadingBooks}
+}
 
-  return {books, error, isLoading, isError, isSuccess};
+function useBook(bookId, user) {
+  const {data} = useQuery({
+    queryKey: ['book', {bookId}],
+    queryFn: () =>
+      client(`books/${bookId}`, {token: user.token}).then(data => data.book),
+  })
+  return data ?? loadingBook
 }
 
 export {useBook, useBookSearch}
