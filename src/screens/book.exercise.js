@@ -18,7 +18,7 @@ import {useListItem, useUpdateListItem} from 'utils/list-items.exercise'
 function BookScreen({user}) {
   const {bookId} = useParams()
   const {book} = useBook(bookId, user)
-  const listItem = useListItem(bookId, user)
+  const listItem = useListItem(user, bookId)
   const {title, author, coverImageUrl, publisher, synopsis} = book
 
   return (
