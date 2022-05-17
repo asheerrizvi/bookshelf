@@ -2,7 +2,7 @@
 import * as React from 'react'
 import {useQuery, queryCache} from 'react-query'
 // 🐨 get AuthContext from context/auth-context
-import {AuthContext} from 'context/auth-context'
+import {useAuth} from 'context/auth-context'
 import {client} from './api-client'
 import bookPlaceholderSvg from 'assets/book-placeholder.svg'
 
@@ -40,7 +40,7 @@ const getBookSearchConfig = (query, user) => ({
 // 💣 remove the user argument here
 function useBookSearch(query) {
   // 🐨 get the user from React.useContext(AuthContext)
-  const {user} = React.useContext(AuthContext)
+  const {user} = useAuth()
   const result = useQuery(getBookSearchConfig(query, user))
   return {...result, books: result.data ?? loadingBooks}
 }
@@ -48,7 +48,7 @@ function useBookSearch(query) {
 // 💣 remove the user argument here
 function useBook(bookId) {
   // 🐨 get the user from React.useContext(AuthContext)
-  const {user} = React.useContext(AuthContext)
+  const {user} = useAuth()
   const {data} = useQuery({
     queryKey: ['book', {bookId}],
     queryFn: () =>
@@ -66,7 +66,7 @@ function useBook(bookId) {
 // refetchBookSearchQuery function. It should no longer need to accept user as
 // an argument and instead lists it as a dependency.
 function useRefetchBookSearchQuery() {
-  const {user} = React.useContext(AuthContext)
+  const {user} = useAuth()
   return React.useCallback(async () => {
     queryCache.removeQueries('bookSearch')
     await queryCache.prefetchQuery(getBookSearchConfig('', user))
