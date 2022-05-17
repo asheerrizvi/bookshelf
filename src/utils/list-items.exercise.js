@@ -1,12 +1,15 @@
 // 🐨 we're going to use React hooks in here now so we'll need React
+import * as React from 'react'
 import {useQuery, useMutation, queryCache} from 'react-query'
 // 🐨 get AuthContext from context/auth-context
+import {AuthContext} from 'context/auth-context'
 import {setQueryDataForBook} from './books'
 import {client} from './api-client'
 
 // 💣 remove the user argument here
-function useListItems(user) {
+function useListItems() {
   // 🐨 get the user from React.useContext(AuthContext)
+  const {user} = React.useContext(AuthContext)
   const {data} = useQuery({
     queryKey: 'list-items',
     queryFn: () =>
@@ -21,9 +24,9 @@ function useListItems(user) {
 }
 
 // 💣 remove the user argument here
-function useListItem(bookId, user) {
+function useListItem(bookId) {
   // 💣 you no longer need to pass the user here
-  const listItems = useListItems(user)
+  const listItems = useListItems()
   return listItems.find(li => li.bookId === bookId) ?? null
 }
 
@@ -34,8 +37,9 @@ const defaultMutationOptions = {
 }
 
 // 💣 remove the user argument here
-function useUpdateListItem(user, options) {
+function useUpdateListItem(options) {
   // 🐨 get the user from React.useContext(AuthContext)
+  const {user} = React.useContext(AuthContext)
   return useMutation(
     updates =>
       client(`list-items/${updates.id}`, {
@@ -62,8 +66,9 @@ function useUpdateListItem(user, options) {
 }
 
 // 💣 remove the user argument here
-function useRemoveListItem(user, options) {
+function useRemoveListItem(options) {
   // 🐨 get the user from React.useContext(AuthContext)
+  const {user} = React.useContext(AuthContext)
   return useMutation(
     ({id}) => client(`list-items/${id}`, {method: 'DELETE', token: user.token}),
     {
@@ -83,8 +88,9 @@ function useRemoveListItem(user, options) {
 }
 
 // 💣 remove the user argument here
-function useCreateListItem(user, options) {
+function useCreateListItem(options) {
   // 🐨 get the user from React.useContext(AuthContext)
+  const {user} = React.useContext(AuthContext)
   return useMutation(
     ({bookId}) => client(`list-items`, {data: {bookId}, token: user.token}),
     {...defaultMutationOptions, ...options},
