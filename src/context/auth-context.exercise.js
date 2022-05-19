@@ -16,6 +16,15 @@ function useAuth() {
   return context
 }
 
+function useClient() {
+  const {user: {
+    token
+  }} = useAuth();
+  return React.useCallback((endpoint, config) => {
+    return client(endpoint, {...config, token})
+  }, [token])
+}
+
 async function getUser() {
   let user = null
 
@@ -69,4 +78,4 @@ function AuthProvider(props) {
   throw new Error(`Unhandled status: ${status}`)
 }
 
-export {AuthProvider, useAuth}
+export {AuthProvider, useAuth, useClient}
