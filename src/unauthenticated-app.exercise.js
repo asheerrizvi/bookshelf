@@ -12,9 +12,15 @@ import {
   ErrorMessage,
   // 💣 when you're all done, you won't need this Dialog anymore
   // you can remove this now or later when you've finished
-  Dialog,
+  // Dialog,
 } from './components/lib'
 // 🐨 import all the Modal compound components you created in ./components/modal
+import {
+  Modal,
+  ModalDismissButton,
+  ModalOpenButton,
+  ModalContents,
+} from './components/modal'
 import {Logo} from './components/logo'
 import {useAuth} from './context/auth-context'
 import {useAsync} from './utils/hooks'
@@ -71,36 +77,36 @@ function LoginForm({onSubmit, submitButton}) {
 }
 
 // 💣 when you're all done, you'll be able to completely delete this
-function LoginFormModal({
-  onSubmit,
-  modalTitleText,
-  modalLabelText,
-  submitButton,
-  openButton,
-}) {
-  const [isOpen, setIsOpen] = React.useState(false)
+// function LoginFormModal({
+//   onSubmit,
+//   modalTitleText,
+//   modalLabelText,
+//   submitButton,
+//   openButton,
+// }) {
+//   const [isOpen, setIsOpen] = React.useState(false)
 
-  return (
-    <React.Fragment>
-      {React.cloneElement(openButton, {onClick: () => setIsOpen(true)})}
-      <Dialog
-        aria-label={modalLabelText}
-        isOpen={isOpen}
-        onDismiss={() => setIsOpen(false)}
-      >
-        <div css={{display: 'flex', justifyContent: 'flex-end'}}>
-          {/* 💰 here's what you should put in your <ModalDismissButton> */}
-          <CircleButton onClick={() => setIsOpen(false)}>
-            <VisuallyHidden>Close</VisuallyHidden>
-            <span aria-hidden>×</span>
-          </CircleButton>
-        </div>
-        <h3 css={{textAlign: 'center', fontSize: '2em'}}>{modalTitleText}</h3>
-        <LoginForm onSubmit={onSubmit} submitButton={submitButton} />
-      </Dialog>
-    </React.Fragment>
-  )
-}
+//   return (
+//     <React.Fragment>
+//       {React.cloneElement(openButton, {onClick: () => setIsOpen(true)})}
+//       <Dialog
+//         aria-label={modalLabelText}
+//         isOpen={isOpen}
+//         onDismiss={() => setIsOpen(false)}
+//       >
+//         <div css={{display: 'flex', justifyContent: 'flex-end'}}>
+//           {/* 💰 here's what you should put in your <ModalDismissButton> */}
+//           <CircleButton onClick={() => setIsOpen(false)}>
+//             <VisuallyHidden>Close</VisuallyHidden>
+//             <span aria-hidden>×</span>
+//           </CircleButton>
+//         </div>
+//         <h3 css={{textAlign: 'center', fontSize: '2em'}}>{modalTitleText}</h3>
+//         <LoginForm onSubmit={onSubmit} submitButton={submitButton} />
+//       </Dialog>
+//     </React.Fragment>
+//   )
+// }
 
 function UnauthenticatedApp() {
   const {login, register} = useAuth()
@@ -130,7 +136,7 @@ function UnauthenticatedApp() {
              it did when you started, but the extra credits will help clean
              things up a bit.
         */}
-        <LoginFormModal
+        {/* <LoginFormModal
           onSubmit={login}
           modalTitleText="Login"
           modalLabelText="Login form"
@@ -143,7 +149,47 @@ function UnauthenticatedApp() {
           modalLabelText="Registration form"
           submitButton={<Button variant="secondary">Register</Button>}
           openButton={<Button variant="secondary">Register</Button>}
-        />
+        /> */}
+        <Modal>
+          <ModalOpenButton>
+            <Button variant="primary">Login</Button>
+          </ModalOpenButton>
+          <ModalContents aria-label="Login form">
+            <div css={{display: 'flex', justifyContent: 'flex-end'}}>
+              <ModalDismissButton>
+                <CircleButton>
+                  <VisuallyHidden>Close</VisuallyHidden>
+                  <span aria-hidden>×</span>
+                </CircleButton>
+              </ModalDismissButton>
+            </div>
+            <h3 css={{textAlign: 'center', fontSize: '2em'}}>Login</h3>
+            <LoginForm
+              onSubmit={login}
+              submitButton={<Button variant="primary">Login</Button>}
+            />
+          </ModalContents>
+        </Modal>
+        <Modal>
+          <ModalOpenButton>
+            <Button variant="secondary">Register</Button>
+          </ModalOpenButton>
+          <ModalContents aria-label="Registration form">
+            <div css={{display: 'flex', justifyContent: 'flex-end'}}>
+              <ModalDismissButton>
+                <CircleButton>
+                  <VisuallyHidden>Close</VisuallyHidden>
+                  <span aria-hidden>×</span>
+                </CircleButton>
+              </ModalDismissButton>
+            </div>
+            <h3 css={{textAlign: 'center', fontSize: '2em'}}>Register</h3>
+            <LoginForm
+              onSubmit={register}
+              submitButton={<Button variant="secondary">Register</Button>}
+            />
+          </ModalContents>
+        </Modal>
       </div>
     </div>
   )
